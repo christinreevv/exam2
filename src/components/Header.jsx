@@ -15,60 +15,54 @@ function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm py-3">
-      <div className="container d-flex justify-content-between align-items-center">
-        <h2 className="h4 m-0 fw-bold">
-       
-  {/* <img
-    src="/music-store.drawio.svg" // путь от public/
-    alt="Логотип"
-    style={{ height: "40px", marginRight: "10px" }}
-  /> */}
-
-
-
-          <Link to="/" className="text-decoration-none text-dark">
-            Music Store
-          </Link>
-        </h2>
-
-        <nav className="d-flex align-items-center gap-3">
-          <Link to="/" className="text-decoration-none text-dark">
-            Каталог
-          </Link>
-          <Link to="/about" className="text-decoration-none text-dark">
-            О нас
-          </Link>
-          <Link to="/contacts" className="text-decoration-none text-dark">
-            Где нас найти?
-          </Link>
-          <Link to="/cart" className="text-decoration-none text-dark">
-            Корзина
-          </Link>
-
-          {token ? (
-            <>
-              <Link to="/profile" className="text-decoration-none text-dark">
-                Профиль
+      <header className="bg-white shadow-sm py-3">
+        <div className="container">
+          <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <h2 className="h4 m-0 fw-bold">
+              <Link to="/" className="text-decoration-none text-dark">
+                Music Store
               </Link>
-              <button className="btn btn-sm btn-danger" onClick={handleLogout}>
-                Выйти
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/register" className="text-decoration-none text-dark">
-                Регистрация
+            </h2>
+    
+            <nav className="d-flex flex-wrap justify-content-center justify-content-md-end align-items-center gap-3">
+              <Link to="/" className="text-decoration-none text-dark">
+                Каталог
               </Link>
-              <Link to="/login" className="text-decoration-none text-dark">
-                Вход
+              <Link to="/about" className="text-decoration-none text-dark">
+                О нас
               </Link>
-            </>
-          )}
-        </nav>
-      </div>
-    </header>
-  );
+              <Link to="/contacts" className="text-decoration-none text-dark">
+                Где нас найти?
+              </Link>
+              <Link to="/cart" className="text-decoration-none text-dark">
+                Корзина
+              </Link>
+    
+              {token ? (
+                <>
+                  <Link to="/profile" className="text-decoration-none text-dark">
+                    Профиль
+                  </Link>
+                  <button className="btn btn-sm btn-danger" onClick={handleLogout}>
+                    Выйти
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/register" className="text-decoration-none text-dark">
+                    Регистрация
+                  </Link>
+                  <Link to="/login" className="text-decoration-none text-dark">
+                    Вход
+                  </Link>
+                </>
+              )}
+            </nav>
+          </div>
+        </div>
+      </header>
+    );
+    
 }
 
 export default Header;

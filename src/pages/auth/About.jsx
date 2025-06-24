@@ -21,7 +21,7 @@ const About = () => {
   }, []);
 
   return (
-    <div className="container py-5">
+    <div className="container py-4">
       <Header />
 
       {/* Логотип и девиз */}
@@ -30,19 +30,20 @@ const About = () => {
           src="/logo.png"
           alt="Логотип компании"
           className="img-fluid mb-3"
-          style={{ maxWidth: "150px" }}
+          style={{ maxWidth: "150px", height: "auto" }}
         />
-        <h1 className="fw-bold">Музыка в каждый дом 🎶</h1>
-        <p className="lead text-muted">Мы делаем звук доступным и стильным</p>
+        <h1 className="fw-bold fs-3">Музыка в каждый дом 🎶</h1>
+        <p className="lead text-muted fs-6">Мы делаем звук доступным и стильным</p>
       </div>
 
       {/* Слайдер с карточками товаров */}
-      <h2 className="text-center mb-4">Новинки компании</h2>
-      <Carousel interval={1000} pause="hover" indicators={false}>
+      <h2 className="text-center mb-4 fs-4">Новинки компании</h2>
+
+      <Carousel interval={2500} pause="hover" indicators={false}>
         {latestProducts.map((product) => (
           <Carousel.Item key={product.id}>
             <div className="d-flex justify-content-center">
-              <div className="w-100" style={{ maxWidth: "300px" }}>
+              <div className="w-100 px-2" style={{ maxWidth: "340px" }}>
                 <ProductCard product={product} user={user} />
               </div>
             </div>

@@ -341,125 +341,124 @@ function Profile() {
           <h1 className="mb-4">Профиль</h1>
 
           {loading ? (
-            <p>Загрузка данных...</p>
-          ) : (
-            <>
-              {user ? (
-                <div className="card mb-4 p-3">
-                  <p><strong>Имя:</strong> {user.name}</p>
-                  <p><strong>Фамилия:</strong> {user.surname}</p>
-                  <p><strong>Email:</strong> {user.email}</p>
-                  <p><strong>Роль:</strong> {user.role === 1 ? "Администратор" : "Пользователь"}</p>
-                </div>
+  <p>Загрузка данных...</p>
+) : (
+  <>
+    {user ? (
+      <div className="card mb-4 p-3">
+        <p><strong>Имя:</strong> {user.name}</p>
+        <p><strong>Фамилия:</strong> {user.surname}</p>
+        <p><strong>Email:</strong> {user.email}</p>
+        <p><strong>Роль:</strong> {user.role === 1 ? "Администратор" : "Пользователь"}</p>
+      </div>
+    ) : (
+      <p>{message}</p>
+    )}
+
+    {user && user.role !== 1 && (
+      <>
+        <h2 className="mb-3">Мои заказы</h2>
+        {orders.length === 0 ? (
+          <p>Заказов пока нет</p>
+        ) : (
+          orders.map((order) => (
+            <div key={order.id} className="card mb-4 p-3">
+              <p>
+                <strong>Заказ #{order.id}</strong> — Статус: {order.status} —{" "}
+                {new Date(order.created_at).toLocaleString()}
+              </p>
+              {order.items?.length > 0 ? (
+                <ul className="mb-2">
+                  {order.items.map((item) => (
+                    <li key={item.id}>
+                      {item.product?.name || "Неизвестный товар"} — {item.quantity} шт.
+                    </li>
+                  ))}
+                </ul>
               ) : (
-                <p>{message}</p>
+                <p>Нет товаров в заказе</p>
               )}
-
-              {user && user.role !== 1 && (
-                <>
-                  <h2 className="mb-3">Мои заказы</h2>
-                  {orders.length === 0 ? (
-                    <p>Заказов пока нет</p>
-                  ) : (
-                    orders.map((order) => (
-                      <div key={order.id} className="card mb-4 p-3">
-                        <p>
-                          <strong>Заказ #{order.id}</strong> — Статус: {order.status} —{" "}
-                          {new Date(order.created_at).toLocaleString()}
-                        </p>
-                        {order.items?.length > 0 ? (
-                          <ul className="mb-2">
-                            {order.items.map((item) => (
-                              <li key={item.id}>
-                                {item.product?.name || "Неизвестный товар"} — {item.quantity} шт.
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p>Нет товаров в заказе</p>
-                        )}
-                        {order.status === "Новый" && (
-                          <button className="btn btn-outline-danger btn-sm" onClick={() => deleteOrder(order.id)}>
-                            Удалить
-                          </button>
-                        )}
-                      </div>
-                    ))
-                  )}
-                </>
+              {order.status === "Новый" && (
+                <button className="btn btn-outline-danger btn-sm w-100 w-md-auto" onClick={() => deleteOrder(order.id)}>
+                  Удалить
+                </button>
               )}
+            </div>
+          ))
+        )}
+      </>
+    )}
 
-              {user?.role === 1 && (
-                <>
-                  {/* УПРАВЛЕНИЕ ЗАКАЗАМИ */}
-                  <div className="mb-5">
-                    <h2>Управление заказами</h2>
-                    <div className="mb-3">
-                      <label className="form-label">
-                        Фильтр по статусу:{" "}
-                        <select
-                          className="form-select d-inline-block w-auto ms-2"
-                          value={orderFilter}
-                          onChange={(e) => setOrderFilter(e.target.value)}
-                        >
-                          <option value="Все">Все</option>
-                          <option value="Новый">Новый</option>
-                          <option value="В обработке">В обработке</option>
-                          <option value="Отменён">Отменён</option>
-                        </select>
-                      </label>
-                    </div>
+    {user?.role === 1 && (
+      <>
+        <div className="mb-5">
+          <h2>Управление заказами</h2>
+          <div className="mb-3">
+            <label className="form-label">
+              Фильтр по статусу:{" "}
+              <select
+                className="form-select d-inline-block w-100 w-md-auto mt-2 mt-md-0"
+                value={orderFilter}
+                onChange={(e) => setOrderFilter(e.target.value)}
+              >
+                <option value="Все">Все</option>
+                <option value="Новый">Новый</option>
+                <option value="В обработке">В обработке</option>
+                <option value="Отменён">Отменён</option>
+              </select>
+            </label>
+          </div>
 
-                    {orders.length > 0 ? (
-                      <div className="table-responsive">
-                        <table className="table table-bordered">
-                          <thead className="table-light">
-                            <tr>
-                              <th>ID</th>
-                              <th>Пользователь</th>
-                              <th>Товары</th>
-                              <th>Статус</th>
-                              <th>Дата</th>
-                              <th>Действия</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {orders
-                              .filter((o) => orderFilter === "Все" || o.status === orderFilter)
-                              .map((order) => (
-                                <tr key={order.id}>
-                                  <td>{order.id}</td>
-                                  <td>{order.user?.name || "Неизвестно"}</td>
-                                  <td>{order.items?.length || 0}</td>
-                                  <td>{order.status}</td>
-                                  <td>{new Date(order.created_at).toLocaleString()}</td>
-                                  <td>
-                                    {order.status === "Новый" && (
-                                      <>
-                                        <button
-                                          className="btn btn-success btn-sm me-1"
-                                          onClick={() => confirmOrder(order.id)}
-                                        >
-                                          ✔
-                                        </button>
-                                        <button
-                                          className="btn btn-danger btn-sm"
-                                          onClick={() => cancelOrder(order.id)}
-                                        >
-                                          ✖
-                                        </button>
-                                      </>
-                                    )}
-                                  </td>
-                                </tr>
-                              ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    ) : (
-                      <p>Нет заказов</p>
-                    )}
-                  </div>
+          {orders.length > 0 ? (
+            <div className="table-responsive">
+              <table className="table table-bordered">
+                <thead className="table-light">
+                  <tr>
+                    <th>ID</th>
+                    <th>Пользователь</th>
+                    <th>Товары</th>
+                    <th>Статус</th>
+                    <th>Дата</th>
+                    <th>Действия</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orders
+                    .filter((o) => orderFilter === "Все" || o.status === orderFilter)
+                    .map((order) => (
+                      <tr key={order.id}>
+                        <td>{order.id}</td>
+                        <td>{order.user?.name || "Неизвестно"}</td>
+                        <td>{order.items?.length || 0}</td>
+                        <td>{order.status}</td>
+                        <td>{new Date(order.created_at).toLocaleString()}</td>
+                        <td>
+                          {order.status === "Новый" && (
+                            <div className="d-flex flex-column flex-md-row gap-1">
+                              <button
+                                className="btn btn-success btn-sm"
+                                onClick={() => confirmOrder(order.id)}
+                              >
+                                ✔
+                              </button>
+                              <button
+                                className="btn btn-danger btn-sm"
+                                onClick={() => cancelOrder(order.id)}
+                              >
+                                ✖
+                              </button>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p>Нет заказов</p>
+          )}
+        </div>
 
                   {/* КАТЕГОРИИ */}
                   <div className="mb-5">
